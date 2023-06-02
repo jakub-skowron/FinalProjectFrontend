@@ -20,6 +20,7 @@ export class OrganizationService {
   private createOrganizationUrl = "http://localhost:8080/organizations";
   private deleteOrganizationUrl = "http://localhost:8080/organizations/";
   private updateOrganizationUrl = "http://localhost:8080/organizations/";
+  private addRoomToOrganizationUrl = "http://localhost:8080/organizations/";
 
   constructor(private http:HttpClient) { }
 
@@ -42,6 +43,13 @@ export class OrganizationService {
       httpOptions
     );
     }
+
+    addRoomToOrganization(organizationId: number, roomId: number): Observable<any> {
+      return this.http.patch(
+        this.addRoomToOrganizationUrl + `${organizationId}/rooms/${roomId}`,
+        httpOptions
+      );
+      }
   
     deleteOrganization(id: number): Observable<any> {
       return this.http.delete(this.deleteOrganizationUrl + id, httpOptions);

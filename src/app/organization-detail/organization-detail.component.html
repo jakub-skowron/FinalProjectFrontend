@@ -1,15 +1,15 @@
 <div *ngIf="organization" class="text-center">
-    <h2>Organization Details</h2>
-    <div><span>id: </span>{{organization.id}}</div>
-    <div>
-        <label for="organization-name">Organization name: </label>
-        <input id="organization-name" [(ngModel)]="updatedName" placeholder="{{ organization.name }}">
-    </div>
-    <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
-    <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
-</div>
-<div class="container">
     <div class="card">
+        <div class="card-body">
+            <h2>Organization Details</h2>
+            <div><span>id: </span>{{organization.id}}</div>
+            <div>
+                <label for="organization-name">Organization name: </label>
+                <input id="organization-name" [(ngModel)]="updatedName" placeholder="{{ organization.name }}">
+            </div>
+            <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
+            <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
+        </div>
         <h3 class="text-center">Rooms List</h3>
         <div class="card-body">
             <table class="table">
@@ -18,14 +18,14 @@
                     <th> Identifier </th>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let el of rooms">
+                    <tr *ngFor="let el of organization.rooms">
                         <td> {{el.name}} </td>
                         <td> {{el.identifier}} </td>
-                        <!-- <td>
-                            <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
+                        <td>
+                            <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
                                 Details
                             </button>
-                        </td> -->
+                        </td>
                         <td>
                             <button class="btn btn-danger" (click)="deleteRoom(el.id)">
                                 Delete
@@ -37,9 +37,39 @@
         </div>
     </div>
 </div>
-<div class="container">
+<div *ngIf="organization" class="container">
     <div class="card">
-        <form (ngSubmit)="createRoom()">
+        <h3 class="text-center">Available Rooms List</h3>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th> Name </th>
+                    <th> Identifier </th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let el of rooms">
+                        <td> {{el.name}} </td>
+                        <td> {{el.identifier}} </td>
+                        <td>
+                            <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
+                                Details
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" (click)="deleteRoom(el.id)">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div *ngIf="organization" class="container">
+    <div class="card">
+        <h3 class="text-center">Add Room Form</h3>
+        <form (ngSubmit)="createRoom(organization.id)">
             <div class="form-group">
                 <ul>
                     <li>
@@ -54,10 +84,11 @@
                     </li>
                     <li>
                         <div class="form-group">
-                          <label for="exampleFormControlSelect1">Level</label>
-                          <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="newRoom.level" name="level">
-                            <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
-                          </select>
+                            <label for="exampleFormControlSelect1">Level</label>
+                            <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="newRoom.level"
+                                name="level">
+                                <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+                            </select>
                         </div>
                     </li>
                     <li>

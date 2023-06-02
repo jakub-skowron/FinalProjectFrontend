@@ -25,14 +25,6 @@ export class RoomService {
     return this.http.post<void>(this.createRoomUrl, room, httpOptions);
   }
 
-  addRoom(room: Room): Observable<any> {
-    return this.http.post(
-      this.createRoomUrl,
-      room,
-      httpOptions
-    );
-  }
-
   deleteRoom(id: number): Observable<any> {
     return this.http.delete(this.deleteRoomUrl + id, httpOptions);
   }

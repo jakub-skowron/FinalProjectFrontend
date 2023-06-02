@@ -17,7 +17,7 @@ export class OrganizationDetailComponent implements OnInit {
   organization: Organization | undefined;
   rooms: Room[] = [];
   updatedName: string = '';
-  newRoom: Room = new Room(0,'','',0,{"SITTING": 0, "STANDING": 0});
+  newRoom: Room = new Room(0, '', '', 0, { "SITTING": 0, "STANDING": 0 });
   levels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
@@ -25,16 +25,16 @@ export class OrganizationDetailComponent implements OnInit {
     private organizationService: OrganizationService,
     private roomService: RoomService,
     private router: Router
-  ) {}
+  ) { }
 
-  loadRooms():void {
+  loadRooms(): void {
     this.roomService.getRooms().subscribe((list: Room[]) => {
       this.rooms = list;
     });
   }
 
-  resetForm():void {
-    this.newRoom = new Room(0,'','',0,{"SITTING": 0, "STANDING": 0});
+  resetForm(): void {
+    this.newRoom = new Room(0, '', '', 0, { "SITTING": 0, "STANDING": 0 });
   }
 
   getOrganization(): void {
@@ -55,10 +55,15 @@ export class OrganizationDetailComponent implements OnInit {
     }
   }
 
-  createRoom(): void {
-    this.roomService.addRoom(this.newRoom).subscribe(() => {
+  createRoom(id: number): void {
+    this.roomService.createRoom(this.newRoom).subscribe(() => {
       this.loadRooms();
       this.resetForm();
+    });
+  }
+
+  addRoomToOrganization(id: number,roomId: number): void {
+    this.organizationService.addRoomToOrganization(id, roomId).subscribe(() => {
     });
   }
 
@@ -67,16 +72,29 @@ export class OrganizationDetailComponent implements OnInit {
       this.loadRooms();
     });
   }
-
+  
   ngOnInit(): void {
     this.getOrganization();
-    this.roomService.getRooms().subscribe((list: Room[]) =>{
-        this.rooms = list;
-        const refresh = this.route.snapshot.queryParamMap.get('refresh');
+    this.roomService.getRooms().subscribe((list: Room[]) => {
+      this.organizationService.getOrganizations().subscribe((organizations: Organization[]) => {
+        const assignedRoomIds: number[] = [];
+        organizations.forEach((org: Organization) => {
+          org.rooms.forEach((room: Room) => {
+            assignedRoomIds.push(room.id);
+          });
+        });
   
-        if (refresh === 'true') {
-          window.location.reload();
-        }
-      })
-    }
+        const unassignedRooms = list.filter((room: Room) => {
+          return !assignedRoomIds.includes(room.id);
+        });
+  
+        this.rooms = unassignedRooms;
+      });
+    });
+  }
+
+  redirectToRoomDetailsPage(id: number, roomId: number): void {
+    this.router.navigate(['/organizations/' + id + '/rooms/' + roomId]);
+  }
+
 }

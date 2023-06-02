@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Organization } from '../organization';
 import { OrganizationService } from '../organization.service';
+import { ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization',
@@ -11,7 +13,11 @@ export class OrganizationComponent implements OnInit {
   organizations: Organization[] = [];
   newOrganization: Organization = new Organization(0,'');
 
-  constructor(private organizationService: OrganizationService){}
+  constructor(
+    private organizationService: OrganizationService, 
+    private route: ActivatedRoute,
+    private router: Router,
+    ){}
 
   loadOrganizations():void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
@@ -21,8 +27,8 @@ export class OrganizationComponent implements OnInit {
 
   createOrganization():void {
     this.organizationService.addOrganization(this.newOrganization).subscribe(() => {
-      this.loadOrganizations(); // Reload the list of villains after creating a new one
-      this.resetForm(); // Reset the form fields
+      this.loadOrganizations();
+      this.resetForm();
     });
   }
 
@@ -33,13 +39,22 @@ export class OrganizationComponent implements OnInit {
   }
 
   resetForm():void {
-    this.newOrganization = new Organization(0,''); // Reset the newVillain object
+    this.newOrganization = new Organization(0,'');
   }
   
   ngOnInit(): void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) =>{
       this.organizations = list;
+      const refresh = this.route.snapshot.queryParamMap.get('refresh');
+
+      if (refresh === 'true') {
+        window.location.reload();
+      }
     })
+  }
+
+  redirectToDetailsPage(id: number): void {
+    this.router.navigate(['/organizations/' + id]);
   }
 
 }

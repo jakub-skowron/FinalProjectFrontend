@@ -1,0 +1,10 @@
+  <div *ngIf="organization" class="text-center">
+    <h2>Organization Details</h2>
+    <div><span>id: </span>{{organization.id}}</div>
+    <div>
+      <label for="organization-name">Organization name: </label>
+      <input id="organization-name" [(ngModel)]="updatedName" placeholder="name">
+    </div>
+    <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
+    <button type="button" (click)="save()" class="btn btn-primary">save</button>
+  </div>

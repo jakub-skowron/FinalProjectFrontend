@@ -8,9 +8,14 @@
                     <th> Name </th>
                 </thead>
                 <tbody>
-                    <tr *ngFor = "let el of organizations">
+                    <tr *ngFor="let el of organizations">
                         <td> {{el.id}} </td>
                         <td> {{el.name}} </td>
+                        <td>
+                            <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
+                                Details
+                            </button>
+                        </td>
                         <td>
                             <button class="btn btn-danger" (click)="deleteOrganization(el.id)">
                                 Delete
@@ -22,18 +27,17 @@
         </div>
     </div>
 </div>
-<form (ngSubmit)="createOrganization()">
-    <div class="form-group">
-      <label for="name">Name:</label>
-      <input
-        type="text"
-        class="form-control"
-        id="name"
-        [(ngModel)]="newOrganization.name"
-        name="name"
-        required
-      />
+<div class="container">
+    <div class="card">
+        <form (ngSubmit)="createOrganization()">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" class="form-control" id="name" [(ngModel)]="newOrganization.name" name="name"
+                    required />
+            </div>
+            <button type="submit" class="btn btn-primary">Add Organization</button>
+        </form>
     </div>
-    <button type="submit" class="btn btn-primary">Add Organization</button>
-</form>
+</div>
 
+<!-- <app-organization-detail [organization]="selectedOrganization"></app-organization-detail> -->

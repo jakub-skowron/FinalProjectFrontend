@@ -17,7 +17,8 @@ export class OrganizationDetailComponent implements OnInit {
   organization: Organization | undefined;
   rooms: Room[] = [];
   updatedName: string = '';
-  newRoom: Room = new Organization(0,'');
+  newRoom: Room = new Room(0,'','',0,{"SITTING": 0, "STANDING": 0});
+  levels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
     private route: ActivatedRoute,
@@ -33,11 +34,7 @@ export class OrganizationDetailComponent implements OnInit {
   }
 
   resetForm():void {
-    this.newRoom = new Room(0,'');
-  }
-
-  ngOnInit(): void {
-    this.getOrganization();
+    this.newRoom = new Room(0,'','',0,{"SITTING": 0, "STANDING": 0});
   }
 
   getOrganization(): void {
@@ -64,4 +61,22 @@ export class OrganizationDetailComponent implements OnInit {
       this.resetForm();
     });
   }
+
+  deleteRoom(id: number) {
+    this.roomService.deleteRoom(id).subscribe(() => {
+      this.loadRooms();
+    });
+  }
+
+  ngOnInit(): void {
+    this.getOrganization();
+    this.roomService.getRooms().subscribe((list: Room[]) =>{
+        this.rooms = list;
+        const refresh = this.route.snapshot.queryParamMap.get('refresh');
+  
+        if (refresh === 'true') {
+          window.location.reload();
+        }
+      })
+    }
 }

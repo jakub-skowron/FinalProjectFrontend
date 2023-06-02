@@ -6,7 +6,7 @@ import { Room } from './room';
 
 const httpOptions = {
   headers: new HttpHeaders({
-    'Content-Type':  'application/json',
+    'Content-Type': 'application/json',
     'Access-Control-Allow-Origin': '*'
   })
 };
@@ -17,8 +17,9 @@ const httpOptions = {
 export class RoomService {
   private createRoomUrl = "http://localhost:8080/rooms";
   private getRoomsUrl = "http://localhost:8080/rooms";
+  private deleteRoomUrl = "http://localhost:8080/rooms/";
 
-  constructor(private http:HttpClient) { }
+  constructor(private http: HttpClient) { }
 
   createRoom(room: Room): Observable<void> {
     return this.http.post<void>(this.createRoomUrl, room, httpOptions);
@@ -30,9 +31,13 @@ export class RoomService {
       room,
       httpOptions
     );
-    }
+  }
 
-    getRooms(): Observable<Room[]> {
-      return this.http.get<Room[]>(this.getRoomsUrl, httpOptions);
-    }
+  deleteRoom(id: number): Observable<any> {
+    return this.http.delete(this.deleteRoomUrl + id, httpOptions);
+  }
+
+  getRooms(): Observable<Room[]> {
+    return this.http.get<Room[]>(this.getRoomsUrl, httpOptions);
+  }
 }

@@ -31,9 +31,9 @@ export class OrganizationService {
     return this.http.get<Organization>(this.getOrganizationUrl + id, httpOptions);
   }
 
-  createOrganization(organization: Organization): Observable<void> {
-    return this.http.post<void>(this.createOrganizationUrl, organization, httpOptions);
-  }
+  // createOrganization(organization: Organization): Observable<void> {
+  //   return this.http.post<void>(this.createOrganizationUrl, organization, httpOptions);
+  // }
 
   addOrganization(organization: Organization): Observable<any> {
     return this.http.post(

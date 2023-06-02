@@ -3,7 +3,7 @@
     <div><span>id: </span>{{organization.id}}</div>
     <div>
         <label for="organization-name">Organization name: </label>
-        <input id="organization-name" [(ngModel)]="updatedName" placeholder="name">
+        <input id="organization-name" [(ngModel)]="updatedName" placeholder="{{ organization.name }}">
     </div>
     <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
     <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
@@ -19,18 +19,18 @@
                 </thead>
                 <tbody>
                     <tr *ngFor="let el of rooms">
-                        <td> {{el.id}} </td>
                         <td> {{el.name}} </td>
+                        <td> {{el.identifier}} </td>
                         <!-- <td>
                             <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
                                 Details
                             </button>
-                        </td>
+                        </td> -->
                         <td>
-                            <button class="btn btn-danger" (click)="deleteOrganization(el.id)">
+                            <button class="btn btn-danger" (click)="deleteRoom(el.id)">
                                 Delete
                             </button>
-                        </td> -->
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -48,19 +48,33 @@
                             required />
                     </li>
                     <li>
-                        <label for="name">Identifier:</label>
-                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
-                            required />
+                        <label for="identifier">Identifier:</label>
+                        <input type="text" class="form-control" id="identifier" [(ngModel)]="newRoom.identifier"
+                            name="identifier" required />
                     </li>
                     <li>
-                        <label for="name">Level:</label>
-                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
-                            required />
+                        <div class="form-group">
+                          <label for="exampleFormControlSelect1">Level</label>
+                          <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="newRoom.level" name="level">
+                            <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+                          </select>
+                        </div>
                     </li>
                     <li>
                         <label for="name">Places:</label>
-                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
-                            required />
+                        <ul>
+                            <li>
+                                <label for="places">Number of sitting places:</label>
+                                <input type="number" class="form-control" id="places"
+                                    [(ngModel)]="newRoom.places.SITTING" name="places" required />
+                            </li>
+                            <li>
+                                <label for="places">Number of standing places:</label>
+                                <input type="number" class="form-control" id="places"
+                                    [(ngModel)]="newRoom.places.STANDING" name="places" required />
+                            </li>
+                        </ul>
+
                     </li>
                 </ul>
             </div>

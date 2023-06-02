@@ -1,10 +1,70 @@
-  <div *ngIf="organization" class="text-center">
+<div *ngIf="organization" class="text-center">
     <h2>Organization Details</h2>
     <div><span>id: </span>{{organization.id}}</div>
     <div>
-      <label for="organization-name">Organization name: </label>
-      <input id="organization-name" [(ngModel)]="updatedName" placeholder="name">
+        <label for="organization-name">Organization name: </label>
+        <input id="organization-name" [(ngModel)]="updatedName" placeholder="name">
     </div>
     <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
-    <button type="button" (click)="save()" class="btn btn-primary">save</button>
-  </div>
+    <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
+</div>
+<div class="container">
+    <div class="card">
+        <h3 class="text-center">Rooms List</h3>
+        <div class="card-body">
+            <table class="table">
+                <thead>
+                    <th> Name </th>
+                    <th> Identifier </th>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let el of rooms">
+                        <td> {{el.id}} </td>
+                        <td> {{el.name}} </td>
+                        <!-- <td>
+                            <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
+                                Details
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-danger" (click)="deleteOrganization(el.id)">
+                                Delete
+                            </button>
+                        </td> -->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div class="card">
+        <form (ngSubmit)="createRoom()">
+            <div class="form-group">
+                <ul>
+                    <li>
+                        <label for="name">Name:</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
+                            required />
+                    </li>
+                    <li>
+                        <label for="name">Identifier:</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
+                            required />
+                    </li>
+                    <li>
+                        <label for="name">Level:</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
+                            required />
+                    </li>
+                    <li>
+                        <label for="name">Places:</label>
+                        <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
+                            required />
+                    </li>
+                </ul>
+            </div>
+            <button type="submit" class="btn btn-primary">Add Room</button>
+        </form>
+    </div>
+</div>

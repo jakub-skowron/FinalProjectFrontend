@@ -17,7 +17,9 @@ const httpOptions = {
 export class RoomService {
   private createRoomUrl = "http://localhost:8080/rooms";
   private getRoomsUrl = "http://localhost:8080/rooms";
+  private getRoomUrl = "http://localhost:8080/rooms/";
   private deleteRoomUrl = "http://localhost:8080/rooms/";
+  private updateRoomUrl = "http://localhost:8080/rooms/";
 
   constructor(private http: HttpClient) { }
 
@@ -33,7 +35,11 @@ export class RoomService {
     return this.http.get<Room[]>(this.getRoomsUrl, httpOptions);
   }
 
-  getRoom(id: number): Observable<Room[]> {
-    return this.http.get<Room[]>(this.getRoomsUrl + id, httpOptions);
+  updateRoom(id: number, room: Room): Observable<any> {
+    return this.http.put(this.updateRoomUrl + id, room, httpOptions);
+  }
+
+  getRoom(id: number): Observable<Room> {
+    return this.http.get<Room>(this.getRoomUrl + id, httpOptions);
   }
 }

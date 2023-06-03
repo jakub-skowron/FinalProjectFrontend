@@ -41,7 +41,7 @@
         </div>
     </div>
 </div>
-<div *ngIf="organization" class="container">
+<!-- <div *ngIf="organization" class="container">
     <div class="card">
         <h3 class="text-center">Available Rooms List</h3>
         <div class="card-body">
@@ -64,11 +64,6 @@
                             </button>
                         </td>
                         <td>
-                            <button class="btn btn-primary" (click)="addRoomToOrganization(organization.id ,el.id)">
-                                Add to Organization
-                            </button>
-                        </td>
-                        <td>
                             <button class="btn btn-danger" (click)="deleteRoom(el.id)">
                                 Delete
                             </button>
@@ -78,11 +73,11 @@
             </table>
         </div>
     </div>
-</div>
+</div> -->
 <div *ngIf="organization" class="container">
     <div class="card">
         <h3 class="text-center">Add Room Form</h3>
-        <form (ngSubmit)="createRoom(organization.id)">
+        <form (ngSubmit)="createRoom()">
             <div class="form-group">
                 <ul>
                     <li>
@@ -118,7 +113,6 @@
                                     [(ngModel)]="newRoom.places.STANDING" name="places" required />
                             </li>
                         </ul>
-
                     </li>
                 </ul>
             </div>

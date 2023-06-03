@@ -1,3 +1,5 @@
+import { Reservation } from "./reservation";
+
 export class Room {
     "id": number;
     "name": string;
@@ -8,6 +10,9 @@ export class Room {
       "SITTING": number,
       "STANDING": number
   };
+    "organizationId": number; 
+    "reservations": Reservation[];
+
     constructor(id: number, name: string, identifier: string, level: number, places: {"SITTING":number,
 "STANDING": number}) {
         this.id = id;

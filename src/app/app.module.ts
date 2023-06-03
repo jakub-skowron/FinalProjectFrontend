@@ -7,14 +7,14 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { OrganizationDetailComponent } from './organization-detail/organization-detail.component';
-import { RoomComponent } from './room/room.component';
+import { RoomDetailComponent } from './room-detail/room-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrganizationComponent,
     OrganizationDetailComponent,
-    RoomComponent
+    RoomDetailComponent
   ],
   imports: [
     BrowserModule,

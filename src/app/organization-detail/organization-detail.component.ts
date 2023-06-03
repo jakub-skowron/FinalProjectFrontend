@@ -61,19 +61,22 @@ export class OrganizationDetailComponent implements OnInit {
     }
   }
 
-  createRoom(id: number): void {
-    this.roomService.createRoom(this.newRoom).subscribe(() => {
-      this.loadRooms();
-      this.resetForm();
-    });
+  createRoom(): void {
+    if (this.organization) {
+      this.newRoom.organizationId = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
+      this.roomService.createRoom(this.newRoom).subscribe(() => {
+        this.loadRooms();
+        this.resetForm();
+      });
+    }
   }
 
-  addRoomToOrganization(id: number,roomId: number): void {
-    this.organizationService.addRoomToOrganization(id, roomId).subscribe(() => {
-      this.loadOrganizationRooms()
-      this.loadRooms();
-    });
-  }
+  // addRoomToOrganization(id: number,roomId: number): void {
+  //   this.organizationService.addRoomToOrganization(id, roomId).subscribe(() => {
+  //     this.loadOrganizationRooms()
+  //     this.loadRooms();
+  //   });
+  // }
 
   deleteRoom(id: number) {
     this.roomService.deleteRoom(id).subscribe(() => {

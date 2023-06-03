@@ -16,11 +16,15 @@
                 <thead>
                     <th> Name </th>
                     <th> Identifier </th>
+                    <th> Level </th>
+                    <th> Places </th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let el of organization.rooms">
                         <td> {{el.name}} </td>
                         <td> {{el.identifier}} </td>
+                        <td> {{el.level}} </td>
+                        <td> {{el.places.SITTING}} sitting and {{el.places.STANDING}} standing</td>
                         <td>
                             <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
                                 Details
@@ -45,14 +49,23 @@
                 <thead>
                     <th> Name </th>
                     <th> Identifier </th>
+                    <th> Level </th>
+                    <th> Places </th>
                 </thead>
                 <tbody>
                     <tr *ngFor="let el of rooms">
                         <td> {{el.name}} </td>
                         <td> {{el.identifier}} </td>
+                        <td> {{el.level}} </td>
+                        <td> {{el.places.SITTING}} sitting and {{el.places.STANDING}} standing</td>
                         <td>
                             <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
                                 Details
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" (click)="addRoomToOrganization(organization.id ,el.id)">
+                                Add to Organization
                             </button>
                         </td>
                         <td>

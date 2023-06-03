@@ -28,9 +28,15 @@ export class OrganizationDetailComponent implements OnInit {
   ) { }
 
   loadRooms(): void {
-    this.roomService.getRooms().subscribe((list: Room[]) => {
-      this.rooms = list;
+    this.roomService.getRooms().subscribe(rooms => {
+      this.rooms = rooms.filter(room => room.availability === true);
     });
+  }
+
+  loadOrganizationRooms(): void {
+    if (this.organization) {
+      this.rooms = this.organization.rooms;
+    }
   }
 
   resetForm(): void {
@@ -64,33 +70,27 @@ export class OrganizationDetailComponent implements OnInit {
 
   addRoomToOrganization(id: number,roomId: number): void {
     this.organizationService.addRoomToOrganization(id, roomId).subscribe(() => {
+      this.loadOrganizationRooms()
+      this.loadRooms();
     });
   }
 
   deleteRoom(id: number) {
     this.roomService.deleteRoom(id).subscribe(() => {
+      this.loadOrganizationRooms()
       this.loadRooms();
     });
   }
-  
+
   ngOnInit(): void {
+    this.loadOrganizationRooms()
+    this.loadRooms();
     this.getOrganization();
-    this.roomService.getRooms().subscribe((list: Room[]) => {
-      this.organizationService.getOrganizations().subscribe((organizations: Organization[]) => {
-        const assignedRoomIds: number[] = [];
-        organizations.forEach((org: Organization) => {
-          org.rooms.forEach((room: Room) => {
-            assignedRoomIds.push(room.id);
-          });
-        });
-  
-        const unassignedRooms = list.filter((room: Room) => {
-          return !assignedRoomIds.includes(room.id);
-        });
-  
-        this.rooms = unassignedRooms;
-      });
-    });
+    const refresh = this.route.snapshot.queryParamMap.get('refresh');
+
+    if (refresh === 'true') {
+      window.location.reload();
+    }
   }
 
   redirectToRoomDetailsPage(id: number, roomId: number): void {

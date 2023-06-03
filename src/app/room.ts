@@ -3,6 +3,7 @@ export class Room {
     "name": string;
     "identifier": string;
     "level": number;
+    "availability": boolean;
     "places": {
       "SITTING": number,
       "STANDING": number

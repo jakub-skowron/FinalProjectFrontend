@@ -1,32 +1,41 @@
-<div *ngIf="organization" class="text-center">
-    <div class="card">
-        <div class="card-body">
-            <h2>Organization Details</h2>
-            <div><span>id: </span>{{organization.id}}</div>
-            <div>
-                <label for="organization-name">Organization name: </label>
-                <input id="organization-name" [(ngModel)]="updatedName" placeholder="{{ organization.name }}">
-            </div>
-            <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
-            <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
+<div *ngIf="organization" class="container text-center mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2>Organization Details</h2>
+        <div><span>id: </span>{{organization.id}}</div>
+        <div id="inputFields">
+            <label for="organization-name">Organization name: </label>
+            <input class="form-control" id="organization-name" [(ngModel)]="updatedName"
+                placeholder="{{ organization.name }}">
         </div>
-        <h3 class="text-center">Rooms List</h3>
+        <div *ngIf="isErrorMessageVisible" class="error-message">
+            [{{ errorMessage }}]
+        </div>
+        <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
+        <button type="button" (click)="saveOrganization()" class="btn btn-primary">save</button>
+    </div>
+</div>
+
+<div *ngIf="organization" class="container text-center mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
+            <h2>Rooms List</h2>
             <table class="table">
                 <thead>
-                    <th> Name </th>
-                    <th> Identifier </th>
-                    <th> Level </th>
-                    <th> Places </th>
+                    <tr>
+                        <th>Name</th>
+                        <th>Identifier</th>
+                        <th>Level</th>
+                        <th>Places</th>
+                    </tr>
                 </thead>
                 <tbody>
                     <tr *ngFor="let el of organization.rooms">
-                        <td> {{el.name}} </td>
-                        <td> {{el.identifier}} </td>
-                        <td> {{el.level}} </td>
-                        <td> {{el.places.SITTING}} sitting and {{el.places.STANDING}} standing</td>
+                        <td>{{el.name}}</td>
+                        <td>{{el.identifier}}</td>
+                        <td>{{el.level}}</td>
+                        <td>{{el.places.SITTING}} sitting and {{el.places.STANDING}} standing</td>
                         <td>
-                            <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
+                            <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id, el.id)">
                                 Details
                             </button>
                         </td>
@@ -41,82 +50,50 @@
         </div>
     </div>
 </div>
-<!-- <div *ngIf="organization" class="container">
-    <div class="card">
-        <h3 class="text-center">Available Rooms List</h3>
+<div *ngIf="organization" class="container text-center mt-5" style="margin-bottom: 30px;">
+    <div class="shadow p-3 mb-5 bg-body rounded">
         <div class="card-body">
-            <table class="table">
-                <thead>
-                    <th> Name </th>
-                    <th> Identifier </th>
-                    <th> Level </th>
-                    <th> Places </th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let el of rooms">
-                        <td> {{el.name}} </td>
-                        <td> {{el.identifier}} </td>
-                        <td> {{el.level}} </td>
-                        <td> {{el.places.SITTING}} sitting and {{el.places.STANDING}} standing</td>
-                        <td>
-                            <button class="btn btn-primary" (click)="redirectToRoomDetailsPage(organization.id ,el.id)">
-                                Details
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger" (click)="deleteRoom(el.id)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div> -->
-<div *ngIf="organization" class="container">
-    <div class="card">
-        <h3 class="text-center">Add Room Form</h3>
-        <form (ngSubmit)="createRoom()">
-            <div class="form-group">
-                <ul>
-                    <li>
+            <h2 class="text-center">Add Room Form</h2>
+            <form (ngSubmit)="createRoom()">
+                <div class="form-group">
+                    <div id="inputFields">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" [(ngModel)]="newRoom.name" name="name"
                             required />
-                    </li>
-                    <li>
+                    </div>
+                    <div id="inputFields">
                         <label for="identifier">Identifier:</label>
                         <input type="text" class="form-control" id="identifier" [(ngModel)]="newRoom.identifier"
                             name="identifier" required />
-                    </li>
-                    <li>
-                        <div class="form-group">
-                            <label for="exampleFormControlSelect1">Level</label>
-                            <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="newRoom.level"
-                                name="level">
-                                <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
-                            </select>
-                        </div>
-                    </li>
-                    <li>
+                    </div>
+
+                    <div class="form-group" id="inputFields">
+                        <label for="exampleFormControlSelect1">Level</label>
+                        <select class="form-control" id="exampleFormControlSelect1" [(ngModel)]="newRoom.level"
+                            name="level">
+                            <option *ngFor="let level of levels" [value]="level">{{ level }}</option>
+                        </select>
+                    </div>
+                    <div>
                         <label for="name">Places:</label>
-                        <ul>
-                            <li>
-                                <label for="places">Number of sitting places:</label>
-                                <input type="number" class="form-control" id="places"
-                                    [(ngModel)]="newRoom.places.SITTING" name="places" required />
-                            </li>
-                            <li>
-                                <label for="places">Number of standing places:</label>
-                                <input type="number" class="form-control" id="places"
-                                    [(ngModel)]="newRoom.places.STANDING" name="places" required />
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-            <button type="submit" class="btn btn-primary">Add Room</button>
-        </form>
+
+                        <div id="inputFields">
+                            <label for="places">Number of sitting places:</label>
+                            <input type="number" class="form-control" id="places" [(ngModel)]="newRoom.places.SITTING"
+                                name="places" required />
+                        </div>
+                        <div id="inputFields">
+                            <label for="places">Number of standing places:</label>
+                            <input type="number" class="form-control" id="places" [(ngModel)]="newRoom.places.STANDING"
+                                name="places" required />
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="isRoomErrorMessageVisible" class="error-message">
+                    [{{ roomErrorMessage }}]
+                </div>
+                <button type="submit" class="btn btn-primary">Add Room</button>
+            </form>
+        </div>
     </div>
 </div>

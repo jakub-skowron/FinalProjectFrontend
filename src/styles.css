@@ -1,1 +1,13 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background-color: #E6E6FA;
+    margin: 0;
+    padding: 0;
+  }
+  
+footer {
+  position: sticky;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  

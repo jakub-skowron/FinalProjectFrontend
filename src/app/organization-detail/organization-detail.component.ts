@@ -12,13 +12,16 @@ import { RoomService } from '../room.service';
   templateUrl: './organization-detail.component.html',
   styleUrls: ['./organization-detail.component.css']
 })
-
 export class OrganizationDetailComponent implements OnInit {
   organization: Organization | undefined;
   rooms: Room[] = [];
   updatedName: string = '';
   newRoom: Room = new Room(0, '', '', 0, { "SITTING": 0, "STANDING": 0 });
   levels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  errorMessage: string | undefined;
+  isErrorMessageVisible: boolean = false;
+  roomErrorMessage: string | undefined;
+  isRoomErrorMessageVisible: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -27,10 +30,14 @@ export class OrganizationDetailComponent implements OnInit {
     private router: Router
   ) { }
 
-  loadRooms(): void {
-    this.roomService.getRooms().subscribe(rooms => {
-      this.rooms = rooms.filter(room => room.availability === true);
-    });
+  ngOnInit(): void {
+    this.loadOrganizationRooms();
+    this.getOrganization();
+    const refresh = this.route.snapshot.queryParamMap.get('refresh');
+
+    if (refresh === 'true') {
+      window.location.reload();
+    }
   }
 
   loadOrganizationRooms(): void {
@@ -57,7 +64,18 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.organization && this.updatedName) {
       this.organization.name = this.updatedName;
       this.organizationService.updateOrganization(this.organization.id, this.organization)
-        .subscribe(() => this.goBack());
+        .subscribe(
+          () => {},
+          (error) => {
+            if (error.status && error.statusText) {
+              this.errorMessage = `${error.error}`;
+            } else {
+              this.errorMessage = 'An error occurred.';
+            }
+            this.showErrorMessage();
+            this.hideErrorMessageAfterDelay(2200);
+          }
+        );
     }
   }
 
@@ -65,39 +83,56 @@ export class OrganizationDetailComponent implements OnInit {
     if (this.organization) {
       this.newRoom.organizationId = parseInt(this.route.snapshot.paramMap.get('id')!, 10);
       this.roomService.createRoom(this.newRoom).subscribe(() => {
-        this.loadRooms();
+        this.loadOrganizationRooms();
         this.resetForm();
+      },
+      (error) => {
+        if (error.status && error.statusText) {
+          this.roomErrorMessage = `${error.error}`;
+        } else {
+          this.roomErrorMessage = 'An error occurred.';
+        }
+        this.showRoomErrorMessage();
+        this.hideRoomErrorMessageAfterDelay(2200);
       });
     }
   }
 
-  // addRoomToOrganization(id: number,roomId: number): void {
-  //   this.organizationService.addRoomToOrganization(id, roomId).subscribe(() => {
-  //     this.loadOrganizationRooms()
-  //     this.loadRooms();
-  //   });
-  // }
+  hideErrorMessageAfterDelay(delay: number): void {
+    setTimeout(() => {
+      this.hideErrorMessage();
+    }, delay);
+  }
+
+  hideRoomErrorMessageAfterDelay(delay: number): void {
+    setTimeout(() => {
+      this.hideRoomErrorMessage();
+    }, delay);
+  }
 
   deleteRoom(id: number) {
     this.roomService.deleteRoom(id).subscribe(() => {
-      this.loadOrganizationRooms()
-      this.loadRooms();
+      this.loadOrganizationRooms();
     });
-  }
-
-  ngOnInit(): void {
-    this.loadOrganizationRooms()
-    this.loadRooms();
-    this.getOrganization();
-    const refresh = this.route.snapshot.queryParamMap.get('refresh');
-
-    if (refresh === 'true') {
-      window.location.reload();
-    }
   }
 
   redirectToRoomDetailsPage(id: number, roomId: number): void {
     this.router.navigate(['/organizations/' + id + '/rooms/' + roomId]);
   }
 
+  showErrorMessage(): void {
+    this.isErrorMessageVisible = true;
+  }
+
+  hideErrorMessage(): void {
+    this.isErrorMessageVisible = false;
+  }
+
+  showRoomErrorMessage(): void {
+    this.isRoomErrorMessageVisible = true;
+  }
+
+  hideRoomErrorMessage(): void {
+    this.isRoomErrorMessageVisible = false;
+  }
 }

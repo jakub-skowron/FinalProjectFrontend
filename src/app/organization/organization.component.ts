@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Organization } from '../organization';
 import { OrganizationService } from '../organization.service';
-import { ActivatedRoute } from '@angular/router';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-organization',
@@ -11,25 +10,48 @@ import { Router } from '@angular/router';
 })
 export class OrganizationComponent implements OnInit {
   organizations: Organization[] = [];
-  newOrganization: Organization = new Organization(0,'');
+  newOrganization: Organization = new Organization(0, '');
+  errorMessage: string | undefined;
+  isErrorMessageVisible: boolean = false;
 
   constructor(
-    private organizationService: OrganizationService, 
+    private organizationService: OrganizationService,
     private route: ActivatedRoute,
-    private router: Router,
-    ){}
+    private router: Router
+  ) {}
 
-  loadOrganizations():void {
+  loadOrganizations(): void {
     this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
       this.organizations = list;
     });
   }
 
-  createOrganization():void {
-    this.organizationService.addOrganization(this.newOrganization).subscribe(() => {
-      this.loadOrganizations();
-      this.resetForm();
-    });
+  handleErrorResponse(error: any): void {
+    this.errorMessage = error.message;
+  }
+
+  createOrganization(): void {
+    this.organizationService.addOrganization(this.newOrganization).subscribe(
+      () => {
+        this.loadOrganizations();
+        this.resetForm();
+      },
+      (error) => {
+        if (error.status && error.statusText) {
+          this.errorMessage = `${error.error}`;
+        } else {
+          this.errorMessage = 'An error occurred.';
+        }
+        this.showErrorMessage();
+        this.hideErrorMessageAfterDelay(2200);
+      }
+    );
+  }
+
+  hideErrorMessageAfterDelay(delay: number): void {
+    setTimeout(() => {
+      this.hideErrorMessage();
+    }, delay);
   }
 
   deleteOrganization(id: number) {
@@ -38,23 +60,30 @@ export class OrganizationComponent implements OnInit {
     });
   }
 
-  resetForm():void {
-    this.newOrganization = new Organization(0,'');
+  resetForm(): void {
+    this.newOrganization = new Organization(0, '');
   }
-  
+
   ngOnInit(): void {
-    this.organizationService.getOrganizations().subscribe((list: Organization[]) =>{
+    this.organizationService.getOrganizations().subscribe((list: Organization[]) => {
       this.organizations = list;
       const refresh = this.route.snapshot.queryParamMap.get('refresh');
 
       if (refresh === 'true') {
         window.location.reload();
       }
-    })
+    });
   }
 
   redirectToDetailsPage(id: number): void {
     this.router.navigate(['/organizations/' + id]);
   }
 
+  showErrorMessage(): void {
+    this.isErrorMessageVisible = true;
+  }
+
+  hideErrorMessage(): void {
+    this.isErrorMessageVisible = false;
+  }
 }

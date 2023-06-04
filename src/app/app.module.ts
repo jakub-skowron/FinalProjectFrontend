@@ -8,13 +8,15 @@ import { AppComponent } from './app.component';
 import { OrganizationComponent } from './organization/organization.component';
 import { OrganizationDetailComponent } from './organization-detail/organization-detail.component';
 import { RoomDetailComponent } from './room-detail/room-detail.component';
+import { ReservationDetailComponent } from './reservation-detail/reservation-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     OrganizationComponent,
     OrganizationDetailComponent,
-    RoomDetailComponent
+    RoomDetailComponent,
+    ReservationDetailComponent
   ],
   imports: [
     BrowserModule,

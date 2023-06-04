@@ -1,41 +1,44 @@
-<div class="container">
-    <div class="card">
-        <h3 class="text-center">Organizations List</h3>
-        <div class="card-body">
-            <table class="table">
-                <thead>
-                    <th> Id </th>
-                    <th> Name </th>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let el of organizations">
-                        <td> {{el.id}} </td>
-                        <td> {{el.name}} </td>
-                        <td>
-                            <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
-                                Details
-                            </button>
-                        </td>
-                        <td>
-                            <button class="btn btn-danger" (click)="deleteOrganization(el.id)">
-                                Delete
-                            </button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+<div class="container text-center mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h1>Organizations List</h1>
+        <table class="table">
+            <thead>
+                <th> Id </th>
+                <th> Name </th>
+            </thead>
+            <tbody>
+                <tr *ngFor="let el of organizations">
+                    <td> {{el.id}} </td>
+                    <td> {{el.name}} </td>
+                    <td>
+                        <button class="btn btn-primary" (click)="redirectToDetailsPage(el.id)">
+                            Details
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" (click)="deleteOrganization(el.id)">
+                            Delete
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
-<div class="container">
-    <div class="card">
+
+<div class="container text-center mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h1>Add Organization Form</h1>
         <form (ngSubmit)="createOrganization()">
             <div class="form-group">
                 <label for="name">Name:</label>
-                <input type="text" class="form-control" id="name" [(ngModel)]="newOrganization.name" name="name"
+                <input type="text" class="form-control mt-3" id="name" [(ngModel)]="newOrganization.name" name="name"
                     required />
             </div>
-            <button type="submit" class="btn btn-primary">Add Organization</button>
+            <div *ngIf="isErrorMessageVisible" class="error-message">
+                [{{ errorMessage }}]
+            </div>
+            <button type="submit" class="btn btn-outline-dark mt-4">Add Organization</button>
         </form>
     </div>
 </div>

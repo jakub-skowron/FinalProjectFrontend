@@ -10,13 +10,15 @@ import { Reservation } from '../reservation';
   templateUrl: './reservation-detail.component.html',
   styleUrls: ['./reservation-detail.component.css']
 })
-export class ReservationDetailComponent implements OnInit  {
+export class ReservationDetailComponent implements OnInit {
   errorMessage: string | undefined;
   isErrorMessageVisible: boolean = false;
   reservation: Reservation | undefined;
   updatedIdentifier: string = '';
   updatedStartReservationDateTime: Date = new Date();
   updatedEndReservationDateTime: Date = new Date();
+  idNav: number = parseInt(this.route.snapshot.paramMap.get('id')!,10);
+  idRoomNav: number = parseInt(this.route.snapshot.paramMap.get('id_room')!,10);
 
   constructor(
     private route: ActivatedRoute,
@@ -49,6 +51,7 @@ export class ReservationDetailComponent implements OnInit  {
       this.reservation.startReservationDateTime = this.updatedStartReservationDateTime;
       this.reservation.endReservationDateTime = this.updatedEndReservationDateTime;
       this.reservationService.updateReservation(this.reservation.id, this.reservation).subscribe(() => {
+        window.location.reload();
       },
         (error) => {
           if (error.status && error.statusText) {
@@ -77,7 +80,8 @@ export class ReservationDetailComponent implements OnInit  {
   }
 
   goBack(): void {
-    this.router.navigate([''], { queryParams: { refresh: 'true' } });
+    this.router.navigate(['/organizations/' + this.idNav + '/rooms/' + this.idRoomNav], 
+    { queryParams: {} });
   }
 
   showErrorMessage(): void {

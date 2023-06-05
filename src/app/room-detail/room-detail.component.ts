@@ -27,6 +27,7 @@ export class RoomDetailComponent implements OnInit {
   isErrorMessageVisible: boolean = false;
   reservationErrorMessage: string | undefined;
   isReservationErrorMessageVisible: boolean = false;
+  idNav: number = parseInt(this.route.snapshot.paramMap.get('id')!,10);
 
   constructor(
     private route: ActivatedRoute,
@@ -47,7 +48,8 @@ export class RoomDetailComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate([''], { queryParams: { refresh: 'true' } });
+    this.router.navigate(['/organizations/' + this.idNav], 
+    { queryParams: {} });
   }
 
   getRoom(): void {
@@ -84,6 +86,7 @@ export class RoomDetailComponent implements OnInit {
         .createReservation(this.newReservation)
         .subscribe(() => {
           this.resetForm();
+          window.location.reload();
         },
           (error) => {
             if (error.status && error.statusText) {
@@ -129,6 +132,7 @@ export class RoomDetailComponent implements OnInit {
       };
       this.room.availability = this.updatedAvailability || false;
       this.roomService.updateRoom(this.room.id, this.room).subscribe(() => {
+        window.location.reload();
       },
         (error) => {
           if (error.status && error.statusText) {
@@ -173,6 +177,7 @@ export class RoomDetailComponent implements OnInit {
   deleteReservation(id: number) {
     this.reservationService.deleteReservation(id).subscribe(() => {
       this.loadRoomReservations();
+      window.location.reload();
     });
   }
 }

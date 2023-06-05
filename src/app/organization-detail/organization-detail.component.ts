@@ -65,7 +65,7 @@ export class OrganizationDetailComponent implements OnInit {
       this.organization.name = this.updatedName;
       this.organizationService.updateOrganization(this.organization.id, this.organization)
         .subscribe(
-          () => {},
+          () => {window.location.reload();},
           (error) => {
             if (error.status && error.statusText) {
               this.errorMessage = `${error.error}`;
@@ -85,6 +85,7 @@ export class OrganizationDetailComponent implements OnInit {
       this.roomService.createRoom(this.newRoom).subscribe(() => {
         this.loadOrganizationRooms();
         this.resetForm();
+        window.location.reload();
       },
       (error) => {
         if (error.status && error.statusText) {
@@ -113,6 +114,7 @@ export class OrganizationDetailComponent implements OnInit {
   deleteRoom(id: number) {
     this.roomService.deleteRoom(id).subscribe(() => {
       this.loadOrganizationRooms();
+      window.location.reload();
     });
   }
 

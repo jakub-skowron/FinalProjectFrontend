@@ -1,3 +1,4 @@
+import { Organization } from "./organization";
 import { Reservation } from "./reservation";
 
 export class Room {

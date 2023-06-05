@@ -72,14 +72,15 @@
                             <td> {{el.startReservationDateTime}} </td>
                             <td> {{el.endReservationDateTime}} </td>
                             <td>
-                                <!-- <button class="btn btn-primary" (click)="redirectToReservationDetailsPage(room.id ,el.id)"> -->
-                                <!-- Details
-                    </button>
-                </td>
-                <td>
-                    <button class="btn btn-danger" (click)="deleteReservation(el.id)">
-                        Delete
-                    </button> -->
+                                <button class="btn btn-primary"
+                                    (click)="redirectToReservationDetailsPage(room.id ,el.id)">
+                                    Details
+                                </button>
+                            </td>
+                            <td>
+                                <button class="btn btn-danger" (click)="deleteReservation(el.id)">
+                                    Delete
+                                </button>
                             </td>
                         </tr>
                     </tbody>
@@ -94,21 +95,21 @@
         <h3 class="text-center">Add Reservation Form</h3>
         <form (ngSubmit)="createReservation()">
             <div class="form-group">
-                    <div id="inputFields">
-                        <label for="identifier">Identifier:</label>
-                        <input type="text" class="form-control" id="identifier" [(ngModel)]="newReservation.identifier"
-                            name="identifier" required />
-                    </div>
-                    <div>
-                        <label for="start-meeting-time">Meeting start:</label>
-                        <input type="datetime-local" id="start-meeting-time"
-                            [(ngModel)]="newReservation.startReservationDateTime" name="start-meeting-time" required />
-                    </div>
-                    <div>
-                        <label for="end-meeting-time">Meeting end:</label>
-                        <input type="datetime-local" id="end-meeting-time"
-                            [(ngModel)]="newReservation.endReservationDateTime" name="end-meeting-time" required />
-                    </div>
+                <div id="inputFields">
+                    <label for="identifier">Identifier:</label>
+                    <input type="text" class="form-control" id="identifier" [(ngModel)]="newReservation.identifier"
+                        name="identifier" required />
+                </div>
+                <div>
+                    <label for="start-meeting-time">Meeting start:</label>
+                    <input type="datetime-local" id="start-meeting-time"
+                        [(ngModel)]="newReservation.startReservationDateTime" name="start-meeting-time" required />
+                </div>
+                <div>
+                    <label for="end-meeting-time">Meeting end:</label>
+                    <input type="datetime-local" id="end-meeting-time"
+                        [(ngModel)]="newReservation.endReservationDateTime" name="end-meeting-time" required />
+                </div>
             </div>
             <div *ngIf="isReservationErrorMessageVisible" class="error-message">
                 [{{ reservationErrorMessage }}]

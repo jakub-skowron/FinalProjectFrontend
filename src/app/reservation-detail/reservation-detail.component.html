@@ -1,1 +1,31 @@
-<p>reservation-detail works!</p>
+<div *ngIf="reservation" class="container text-center mt-5">
+    <div class="shadow p-3 mb-5 bg-body rounded">
+        <h2>Room Details</h2>
+        <div><span>id: </span>{{reservation.id}}</div>
+        <div>
+            <div id="inputFields">
+                <label for="organization-identifier">Room identifier: </label>
+                <input class="form-control" id="organization-identifier" [(ngModel)]="updatedIdentifier"
+                    placeholder="{{ reservation.identifier }}">
+            </div>
+            <div>
+                <label for="start-meeting-time">Meeting start:</label>
+                <input type="datetime-local" id="start-meeting-time"
+                    [(ngModel)]="reservation.startReservationDateTime" name="start-meeting-time" required />
+            </div>
+            <div>
+                <label for="end-meeting-time">Meeting end:</label>
+                <input type="datetime-local" id="end-meeting-time"
+                    [(ngModel)]="reservation.endReservationDateTime" name="end-meeting-time" required />
+            </div>
+
+            <div *ngIf="isErrorMessageVisible" class="error-message">
+                [{{ errorMessage }}]
+            </div>
+            <div>
+                <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
+                <button type="button" (click)="saveReservation()" class="btn btn-primary">save</button>
+            </div>
+        </div>
+    </div>
+</div>

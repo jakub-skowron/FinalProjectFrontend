@@ -14,7 +14,8 @@ import { RoomService } from '../room.service';
 })
 export class RoomDetailComponent implements OnInit {
   room: Room | undefined;
-  newReservation: Reservation = new Reservation(0, '', new Date(), new Date());
+  reservations: Reservation[] = [];
+  newReservation: Reservation = new Reservation('', new Date(), new Date());
   updatedName: string = '';
   updatedIdentifier: string = '';
   updatedLevel: number = 0;
@@ -62,7 +63,7 @@ export class RoomDetailComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newReservation = new Reservation(0, '', new Date(), new Date());
+    this.newReservation = new Reservation('', new Date(), new Date());
   }
 
   createReservation(): void {
@@ -75,7 +76,10 @@ export class RoomDetailComponent implements OnInit {
         this.route.snapshot.paramMap.get('id_room')!,
         10
       );
-
+      this.newReservation.organizationId = parseInt(
+        this.route.snapshot.paramMap.get('id')!,
+        10
+      );
       this.reservationService
         .createReservation(this.newReservation)
         .subscribe(() => {
@@ -87,8 +91,8 @@ export class RoomDetailComponent implements OnInit {
             } else {
               this.reservationErrorMessage = 'An error occurred.';
             }
-            this.showRoomErrorMessage();
-            this.hideRoomErrorMessageAfterDelay(2200);
+            this.showErrorMessage();
+            this.hideErrorMessageAfterDelay(2200);
           });
     }
   }
@@ -132,26 +136,43 @@ export class RoomDetailComponent implements OnInit {
           } else {
             this.errorMessage = 'An error occurred.';
           }
-          this.showErrorMessage();
-          this.hideErrorMessageAfterDelay(2200);
+          this.showRoomErrorMessage();
+          this.hideRoomErrorMessageAfterDelay(2200);
         }
       );
     }
   }
 
+  loadRoomReservations(): void {
+    if (this.room) {
+      this.reservations = this.room.reservations;
+    }
+  }
+
   showErrorMessage(): void {
-    this.isErrorMessageVisible = true;
-  }
-
-  hideErrorMessage(): void {
-    this.isErrorMessageVisible = false;
-  }
-
-  showRoomErrorMessage(): void {
     this.isReservationErrorMessageVisible = true;
   }
 
-  hideRoomErrorMessage(): void {
+  hideErrorMessage(): void {
     this.isReservationErrorMessageVisible = false;
+  }
+
+  showRoomErrorMessage(): void {
+    this.isErrorMessageVisible = true;
+  }
+
+  hideRoomErrorMessage(): void {
+    this.isErrorMessageVisible = false;
+  }
+
+  redirectToReservationDetailsPage(roomId: number, id: number): void {
+    const organizationId = parseInt(this.route.snapshot.paramMap.get('id')!, 10)
+    this.router.navigate(['/organizations/' + organizationId + '/rooms/' + roomId + '/reservations/' + id]);
+  }
+
+  deleteReservation(id: number) {
+    this.reservationService.deleteReservation(id).subscribe(() => {
+      this.loadRoomReservations();
+    });
   }
 }

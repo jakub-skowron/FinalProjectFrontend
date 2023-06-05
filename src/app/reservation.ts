@@ -8,9 +8,9 @@ export class Reservation {
     "endReservationDateTime": Date;
     "room": Room;
     "roomId": number;
+    "organizationId": number;
 
-    constructor(id: number, identifier: string, startReservationDateTime: Date, endReservationDateTime: Date) {
-            this.id = id;
+    constructor(identifier: string, startReservationDateTime: Date, endReservationDateTime: Date) {
             this.identifier = identifier;
             this.startReservationDateTime = startReservationDateTime;
             this.endReservationDateTime = endReservationDateTime;

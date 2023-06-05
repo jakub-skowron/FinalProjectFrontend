@@ -25,96 +25,108 @@
             <div>
                 <label for="name">Places:</label>
                 <div id="inputFields">
-                    <label for="organization-places">Number of sitting places:</label>
-                    <input type="number" class="form-control" id="organization-places"
-                        [(ngModel)]="updatePlaces.SITTING" name="organization-places" required />
-                </div>
-                <div id="inputFields">
-                    <label for="organization-places">Number of standing places:</label>
-                    <input type="number" class="form-control" id="organization-places"
-                        [(ngModel)]="updatePlaces.STANDING" name="organization-places" required />
-                </div>
-            </div>
-            <div id="inputFields">
-                <div class="form-group">
-                    <label for="organization-availability">Availability:</label>
-                    <div class="custom-control custom-switch">
-                        <input type="checkbox" class="custom-control-input" id="organization-availability"
-                            [(ngModel)]="updatedAvailability" name="organization-availability">
-                        <label class="custom-control-label" for="organization-availability"></label>
+                    <div class="form-group">
+                        <label for="room-places">Number of sitting places: </label>
+                        <select class="form-control" id="room-places" [(ngModel)]="updatePlaces.SITTING"
+                            name="room-places">
+                            <option *ngFor="let place of places" [value]="place"
+                                [selected]="place === room.places.SITTING">
+                                {{ place }}</option>
+                        </select>
                     </div>
                 </div>
-                <div *ngIf="isErrorMessageVisible" class="error-message">
-                    [{{ errorMessage }}]
-                </div>
-                <div>
-                    <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
-                    <button type="button" (click)="saveRoom()" class="btn btn-primary">save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<div *ngIf="room" class="container text-center mt-5">
-    <div class="shadow p-3 mb-5 bg-body rounded">
-        <div class="card-body">
-            <h3 class="text-center">Reservations List</h3>
-            <div class="card-body">
-                <table class="table">
-                    <thead>
-                        <th> Identifier </th>
-                        <th> Start Date </th>
-                        <th> End Date </th>
-                    </thead>
-                    <tbody>
-                        <tr *ngFor="let el of room.reservations">
-                            <td> {{el.identifier}} </td>
-                            <td> {{el.startReservationDateTime}} </td>
-                            <td> {{el.endReservationDateTime}} </td>
-                            <td>
-                                <button class="btn btn-primary"
-                                    (click)="redirectToReservationDetailsPage(room.id ,el.id)">
-                                    Details
-                                </button>
-                            </td>
-                            <td>
-                                <button class="btn btn-danger" (click)="deleteReservation(el.id)">
-                                    Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
-
-<div *ngIf="room" class="container text-center mt-5" style="margin-bottom: 30px;">
-    <div class="card">
-        <h3 class="text-center">Add Reservation Form</h3>
-        <form (ngSubmit)="createReservation()">
-            <div class="form-group">
                 <div id="inputFields">
-                    <label for="identifier">Identifier:</label>
-                    <input type="text" class="form-control" id="identifier" [(ngModel)]="newReservation.identifier"
-                        name="identifier" required />
+                    <div class="form-group">
+                        <label for="room-places">Number of standing places: </label>
+                        <select class="form-control" id="room-places" [(ngModel)]="updatePlaces.STANDING"
+                            name="room-places">
+                            <option *ngFor="let place of places" [value]="place"
+                                [selected]="place === room.places.STANDING">
+                                {{ place }}</option>
+                        </select>
+                    </div>
                 </div>
-                <div>
-                    <label for="start-meeting-time">Meeting start:</label>
-                    <input type="datetime-local" id="start-meeting-time"
-                        [(ngModel)]="newReservation.startReservationDateTime" name="start-meeting-time" required />
-                </div>
-                <div>
-                    <label for="end-meeting-time">Meeting end:</label>
-                    <input type="datetime-local" id="end-meeting-time"
-                        [(ngModel)]="newReservation.endReservationDateTime" name="end-meeting-time" required />
+                    <div id="inputFields">
+                        <div class="form-group">
+                            <label for="organization-availability">Availability:</label>
+                            <div class="custom-control custom-switch">
+                                <input type="checkbox" class="custom-control-input" id="organization-availability"
+                                    [(ngModel)]="updatedAvailability" name="organization-availability">
+                                <label class="custom-control-label" for="organization-availability"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div *ngIf="isErrorMessageVisible" class="error-message">
+                        [{{ errorMessage }}]
+                    </div>
+                    <div>
+                        <button type="button" (click)="goBack()" class="btn btn-primary">go back</button>
+                        <button type="button" (click)="saveRoom()" class="btn btn-primary">save</button>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="isReservationErrorMessageVisible" class="error-message">
-                [{{ reservationErrorMessage }}]
-            </div>
-            <button type="submit" class="btn btn-primary">Add Meeting</button>
-        </form>
+        </div>
     </div>
-</div>
+    <div *ngIf="room" class="container text-center mt-5">
+        <div class="shadow p-3 mb-5 bg-body rounded">
+            <div class="card-body">
+                <h3 class="text-center">Reservations List</h3>
+                <div class="card-body">
+                    <table class="table">
+                        <thead>
+                            <th> Identifier </th>
+                            <th> Start Date </th>
+                            <th> End Date </th>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let el of room.reservations">
+                                <td> {{el.identifier}} </td>
+                                <td> {{el.startReservationDateTime}} </td>
+                                <td> {{el.endReservationDateTime}} </td>
+                                <td>
+                                    <button class="btn btn-primary"
+                                        (click)="redirectToReservationDetailsPage(room.id ,el.id)">
+                                        Details
+                                    </button>
+                                </td>
+                                <td>
+                                    <button class="btn btn-danger" (click)="deleteReservation(el.id)">
+                                        Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="room" class="container text-center mt-5" style="margin-bottom: 30px;">
+        <div class="card">
+            <h3 class="text-center">Add Reservation Form</h3>
+            <form (ngSubmit)="createReservation()">
+                <div class="form-group">
+                    <div id="inputFields">
+                        <label for="identifier">Identifier:</label>
+                        <input type="text" class="form-control" id="identifier" [(ngModel)]="newReservation.identifier"
+                            name="identifier" required />
+                    </div>
+                    <div>
+                        <label for="start-meeting-time">Meeting start:</label>
+                        <input type="datetime-local" id="start-meeting-time"
+                            [(ngModel)]="newReservation.startReservationDateTime" name="start-meeting-time" required />
+                    </div>
+                    <div>
+                        <label for="end-meeting-time">Meeting end:</label>
+                        <input type="datetime-local" id="end-meeting-time"
+                            [(ngModel)]="newReservation.endReservationDateTime" name="end-meeting-time" required />
+                    </div>
+                </div>
+                <div *ngIf="isReservationErrorMessageVisible" class="error-message">
+                    [{{ reservationErrorMessage }}]
+                </div>
+                <button type="submit" class="btn btn-primary">Add Meeting</button>
+            </form>
+        </div>
+    </div>

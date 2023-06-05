@@ -16,8 +16,9 @@ export class OrganizationDetailComponent implements OnInit {
   organization: Organization | undefined;
   rooms: Room[] = [];
   updatedName: string = '';
-  newRoom: Room = new Room(0, '', '', 0, { "SITTING": 0, "STANDING": 0 });
+  newRoom: Room = new Room(0, '', '', 0, { "SITTING": 2, "STANDING": 2});
   levels: number[] = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  places: number[] = [2, 3, 4, 5, 6, 7, 8, 9, 10];
   errorMessage: string | undefined;
   isErrorMessageVisible: boolean = false;
   roomErrorMessage: string | undefined;
@@ -47,7 +48,7 @@ export class OrganizationDetailComponent implements OnInit {
   }
 
   resetForm(): void {
-    this.newRoom = new Room(0, '', '', 0, { "SITTING": 0, "STANDING": 0 });
+    this.newRoom = new Room(0, '', '', 0, { "SITTING": 2, "STANDING": 2 });
   }
 
   getOrganization(): void {

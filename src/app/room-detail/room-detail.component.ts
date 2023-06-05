@@ -28,6 +28,7 @@ export class RoomDetailComponent implements OnInit {
   reservationErrorMessage: string | undefined;
   isReservationErrorMessageVisible: boolean = false;
   idNav: number = parseInt(this.route.snapshot.paramMap.get('id')!,10);
+  places: number[] = [2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(
     private route: ActivatedRoute,
